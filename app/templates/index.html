@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% import 'macros.html' as macro %}
+<!-- styles block -->
+
+<!-- content block -->
+{% block content %}
+    <div class="container">
+        <a href="/blog/new">Create a blog</a>
+        {{ macro.displayBlogs(blog) }}
+    </div>
+{% endblock %}

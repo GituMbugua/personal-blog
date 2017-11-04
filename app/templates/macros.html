@@ -1,0 +1,18 @@
+{% macro displayBlogs(blog_list) %}
+    {% for blog in blog_list %}
+        <div class="row">
+            <div class="col-md-2 col-lg-2">
+                
+            </div>
+            <div class="col-md-10 col-lg-10">
+                <hr>
+                <h4 class="text-center">{{blog.title}}</h4>
+                <hr>
+                <h5>Posted at {{blog.time}}</h5>
+                <p>{{blog.post | truncate(200)}}</p>
+
+                <a class="btn btn-info">READ MORE</a>
+            </div>
+        </div>
+    {% endfor %}
+{% endmacro %}
