@@ -4,8 +4,8 @@
 
 <!-- content block -->
 {% block content %}
-    <div class="container">
+    <div class="container-fluid">
         <a href="/blog/new">Create a blog</a>
-        {{ macro.displayBlogs(blog) }}
+        {{ macro.displayAllBlogs(blogs) }}
     </div>
 {% endblock %}
