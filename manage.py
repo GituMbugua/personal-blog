@@ -8,13 +8,13 @@ app = create_app('development')
 
 manager = Manager(app)
 manager.add_command('server', Server)
-# @manager.command
-# def test():
-#     '''
-#     run unittests
-#     '''
-#     tests = unittest.TestLoader().discover('tests')
-#     unittest.TextTestRunner(verbosity = 2).run(tests)
+@manager.command
+def test():
+    '''
+    run unittests
+    '''
+    tests = unittest.TestLoader().discover('tests')
+    unittest.TextTestRunner(verbosity = 2).run(tests)
 
 @manager.shell
 def make_shell_context():
