@@ -49,6 +49,15 @@ class Blog(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     photos = db.relationship('Photo', backref = 'blog', lazy = 'dynamic')
     
+    def save_blog(self):
+        db.session.add(self)
+        db.session.commit()
+
+    @classmethod
+    def get_blogs(cls):
+        blog = Blog.query.order_by(Blog.time.desc()).all()
+        return blog
+    
 class Comment(db.Model):
     __tablename__ = 'comments'
 
