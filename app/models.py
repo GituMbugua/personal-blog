@@ -12,24 +12,12 @@ class User(db.Model):
     email = db.Column(db.String(255), unique = True, index = True)
     password_hash = db.Column(db.String(255))   
     blogs =  db.relationship('Blog', backref = 'user', lazy = "dynamic")
-    comments = db.relationship('Comment', backref = 'user', lazy = "dynamic")
-
-    # define relationship to Role via UserRoles
-    roles = db.relationship('Role', secondary = 'user_roles')    
 
 class Role(db.Model):
     __tablename__ = 'roles'
 
     id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String(255), index = True)
-
-# UserRoles association table
-class UserRole(db.Model):
-    __tablename__ = 'user_roles'
-
-    id = db.Column(db.Integer, primary_key = True)
-    user_id = db.Column(db.Integer(), db.ForeignKey('users.id', ondelete='CASCADE'))
-    role_id = db.Column(db.Integer(), db.ForeignKey('roles.id', ondelete='CASCADE'))
 
 class Photo(db.Model):
     __tablename__ = 'photos'
@@ -48,6 +36,7 @@ class Blog(db.Model):
     time = db.Column(db.DateTime, default = datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     photos = db.relationship('Photo', backref = 'blog', lazy = 'dynamic')
+    comments = db.relationship('Comment', backref = 'blog', lazy = 'dynamic')
     
     def save_blog(self):
         db.session.add(self)
@@ -62,7 +51,17 @@ class Comment(db.Model):
     __tablename__ = 'comments'
 
     id = db.Column(db.Integer, primary_key = True)
+    name = db.Column(db.String(50), index = True)
+    email = db.Column(db.String(50), index = True)
     post_comment = db.Column(db.String(255), index = True)
     time = db.Column(db.DateTime, default = datetime.now)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    blog_id = db.Column(db.Integer, db.ForeignKey('comments.id'))
+    blog_id = db.Column(db.Integer, db.ForeignKey('blogs.id'))
+
+    def save_comment(self):
+        db.session.add(self)
+        db.session.commit()
+
+    @classmethod
+    def get_comments(cls, id):
+        comments = Comment.query.filter_by(blog_id = id).order_by(Comment.time.desc()).all()
+        return comments
