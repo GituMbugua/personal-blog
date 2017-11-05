@@ -11,10 +11,15 @@
         </div>    
         <div class="col-md-7 col-lg-7">
             <hr>
-            <h2 class="text-center">{{blog.title}}</h2>        
+            <h2 class="text-center">{{blog.title}}</h2> 
+            
+            <form action="{{ url_for('main.delete_blog', id = blog.id) }}" method=post class=delete-entry>
+                <input type="hidden" name="blog_id" value="{{blog.id}}" />
+                <input type="submit" value="Delete post" />
+           </form>
             <hr>
             <img src="{{blog.image_path}}" alt="Post Image" class="img-thumbnail">
-            <p>{{blog.post}}</p>
+            <p>{{format_blog | safe}}</p>
         </div>
     </div>
     <br>
