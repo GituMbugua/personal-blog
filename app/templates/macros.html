@@ -6,7 +6,7 @@
             </div>
             <div class="col-md-7 col-lg-7">
                 <hr>
-                <h4 class="text-center">{{blog.title}}</h4>
+                <h4 class="text-center"><a href="{{url_for('main.new_blog', id = blog.id)}}">{{blog.title}}</a></h4>
                 <hr>
                 <h5>Posted at {{blog.time}}</h5>
                 <p>{{blog.post | truncate(200)}}</p>
