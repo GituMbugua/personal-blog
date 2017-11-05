@@ -1,5 +1,7 @@
-from flask import render_template, request, redirect, url_for
+import markdown2
+from flask import render_template, request, redirect, url_for, abort, g
 from . import main
+from .. import db
 from .forms import BlogForm
 from ..models import User, Blog, Comment
 from flask_login import login_required, current_user
@@ -22,6 +24,10 @@ def blog(id):
     # display blog
     blog = Blog.query.get(id)
 
+    # update blog
+    if blog is None:
+        abort(404)
+    format_blog = markdown2.markdown(blog.post, extras = ["code-friendly", "fenced-code-blocks"])
 
     # get info from comment form
     name = request.args.get('name')
@@ -40,7 +46,14 @@ def blog(id):
     comments = Comment.get_comments(blog.id)
 
     title = 'Blog post'
-    return render_template('blog.html', blog = blog, title = title, comment_form = form, comments = comments)
+    return render_template('blog.html', blog = blog, title = title, comments = comments, format_blog = format_blog)
+
+@main.route('/delete/<int:id>', methods = ["GET", "POST"])
+def delete_blog(id):
+    db.execute('delete from blogs where id = ?', [request.form['blog_id']])
+    db.commit()
+    
+    return redirect(url_for('.index'))
 
 @main.route('/blog/new', methods = ["GET", "POST"])
 # @login_required
