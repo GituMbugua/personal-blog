@@ -42,6 +42,11 @@ class Blog(db.Model):
         db.session.add(self)
         db.session.commit()
 
+    def delete_blog(self):
+        # blog_delete = Blog.query.filter_by(id = id).delete()
+        db.engine.execute('delete from blogs WHERE id = id')
+        db.session.commit()
+
     @classmethod
     def get_blogs(cls):
         blog = Blog.query.order_by(Blog.time.desc()).all()
