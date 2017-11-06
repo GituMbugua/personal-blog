@@ -7,3 +7,7 @@ class BlogForm(FlaskForm):
     image = StringField('Image Url')
     post = TextAreaField('Blog Content', validators = None)
     submit = SubmitField('Submit')
+
+class SubscriptionForm(FlaskForm):
+    email = StringField('Email', validators = [Required()])
+    submit = SubmitField('Subscribe')
