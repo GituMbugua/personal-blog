@@ -11,6 +11,8 @@ class User(db.Model):
     username = db.Column(db.String(255), index = True)
     email = db.Column(db.String(255), unique = True, index = True)
     password_hash = db.Column(db.String(255))   
+    role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
+    is_admin = db.Column(db.Boolean, default = False)
     blogs =  db.relationship('Blog', backref = 'user', lazy = "dynamic")
 
 class Role(db.Model):
