@@ -13,10 +13,14 @@
             <hr>
             <h2 class="text-center">{{blog.title}}</h2> 
             
+            {% if current_user.is_admin %}
             <form action="{{ url_for('main.delete_blog', id = blog.id) }}" method=post class=delete-entry>
                 <input type="hidden" name="blog_id" value="{{blog.id}}" />
-                <input type="submit" value="Delete post" />
+                <input class="btn btn-danger" type="submit" value="Delete post" />
            </form>
+           {% else %}
+
+           {% endif %}
             <hr>
             <img src="{{blog.image_path}}" alt="Post Image" class="img-thumbnail">
             <p>{{format_blog | safe}}</p>
@@ -35,13 +39,13 @@
             <h3>Post a Comment</h3>
             <form action="/blog/{{blog.id}}">
                 <div class="row">
-                        <div class="col-md-12">
-                            <input type="text" name="comment" placeholder="Post a comment" class="form-control">
+                        <div class="col-md-12 comment-field">
+                            <textarea style="overflow:hidden" type="text" name="comment" placeholder="Post a comment" class="form-control"></textarea>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-6 name-field">
                             <input type="text" name="name" placeholder="Your name" class="form-control">
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-6 email-field">
                             <input type="text" name="email" placeholder="Email Address" class="form-control">
                         </div>
                         <input style="display: block" type="submit" value="Submit" class="btn btn-success">
